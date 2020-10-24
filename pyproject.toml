@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "page-loader"
+version = "0.1.0"
+description = ""
+authors = ["sharknoise <sharknoise@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.6"
+requests = "^2.24.0"
+pathlib = "^1.0.1"
+
+[tool.poetry.dev-dependencies]
+wemake-python-styleguide = "^0.14.1"
+pytest = "^6.1.1"
+pytest-cov = "^2.10.1"
+mypy = "^0.790"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

@@ -4,10 +4,14 @@ version = "0.1.0"
 description = ""
 authors = ["sharknoise <sharknoise@gmail.com>"]
 
+[tool.poetry.scripts]
+page-loader = "page_loader.scripts.page_loader:main"
+
 [tool.poetry.dependencies]
 python = "^3.6"
 requests = "^2.24.0"
 pathlib = "^1.0.1"
+isort = "4.3.21"
 
 [tool.poetry.dev-dependencies]
 wemake-python-styleguide = "^0.14.1"

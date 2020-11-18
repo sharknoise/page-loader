@@ -1,15 +1,15 @@
 [tool.poetry]
 name = "page-loader"
-version = "0.1.0"
+version = "0.2.0"
 description = ""
 authors = ["sharknoise <sharknoise@gmail.com>"]
 
 packages = [
-  { include = "page_loader" },
+  { include = "page_load" },
 ]
 
 [tool.poetry.scripts]
-page-loader = "page_loader.scripts.page_loader:main"
+page-loader = "page_load.scripts.page_loader:main"
 
 [tool.poetry.dependencies]
 python = "^3.6"

@@ -51,7 +51,7 @@ def make_filename(target_url):
         target_url: url of the page
 
     Returns:
-        A valid filename.
+        a valid filename string
     """
     url_without_scheme = re.sub(SCHEME, '', target_url)
     filename_without_extension = re.sub(

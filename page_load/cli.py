@@ -10,9 +10,10 @@ parser.add_argument(
     )
 
 parser.add_argument(
+    '-o',
     '--output',
-    help=(
-        'set the save directory',
-    ),
+    help='set the save directory',
+    metavar='OUTPUT',
     dest='destination',
+    default='',
 )

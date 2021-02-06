@@ -5,10 +5,7 @@ lint:
 	poetry run flake8 page_load
 
 test:
-	poetry run pytest
-
-test-coverage:
-	poetry run pytest tests --cov=page_load --cov-report xml
+	poetry run pytest -o log_cli=True -o log_cli_level=10 --cov=page_loader --cov-report=term-missing
 
 
-.PHONY: install lint test test-coverage
+.PHONY: install lint test

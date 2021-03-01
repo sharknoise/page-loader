@@ -2,6 +2,7 @@
 
 import re
 from pathlib import Path
+from urllib.parse import urlparse
 
 import requests
 
@@ -37,10 +38,15 @@ def download_page(target_url, destination=None):
         )
 
 
-SCHEME = r'^.*//'
 NOT_LETTERS_OR_DIGITS = r'[^a-zA-Z0-9]'
 SEPARATOR = '-'
 EXTENSION = '.html'
+
+
+def strip_scheme(full_url):
+    """Return a url string stripped of its scheme."""
+    parsed = urlparse(full_url)
+    return parsed.netloc + parsed.path
 
 
 def make_filename(target_url):
@@ -53,7 +59,7 @@ def make_filename(target_url):
     Returns:
         a valid filename string
     """
-    url_without_scheme = re.sub(SCHEME, '', target_url)
+    url_without_scheme = strip_scheme(target_url)
     filename_without_extension = re.sub(
         NOT_LETTERS_OR_DIGITS,
         SEPARATOR,

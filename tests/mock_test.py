@@ -1,6 +1,4 @@
-
 import pytest
-import requests
 
 from page_load import core
 

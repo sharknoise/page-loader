@@ -60,9 +60,13 @@ def make_filename(target_url):
         a valid filename string
     """
     url_without_scheme = strip_scheme(target_url)
-    filename_without_extension = re.sub(
+    if url_without_scheme.endswith(EXTENSION):
+        prepared_url = url_without_scheme[:-len(EXTENSION)]
+    else:
+        prepared_url = url_without_scheme
+    filename = re.sub(
         NOT_LETTERS_OR_DIGITS,
         SEPARATOR,
-        url_without_scheme,
+        prepared_url,
     )
-    return filename_without_extension + EXTENSION
+    return filename + EXTENSION

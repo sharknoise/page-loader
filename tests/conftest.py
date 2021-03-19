@@ -6,8 +6,9 @@ import requests
 
 TESTS_DIR = Path(__file__).parent.absolute()
 FIXTURES_DIR = TESTS_DIR / 'fixtures'
-TEST_PAGE_FILENAME = 'hexlet-io-courses.html'
-TEST_URL = 'https://hexlet.io/courses'
+TEST_PAGE_FILENAME = 'sharknoise-github-io-index.html'
+TEST_PAGE_PATH = FIXTURES_DIR / TEST_PAGE_FILENAME
+TEST_URL = 'http://sharknoise.github.io/index.html'
 
 SUCCESSFUL = 200
 ERROR = 404
@@ -23,7 +24,7 @@ class MockResponse:
 def test_page():
     page = {}
 
-    with open(FIXTURES_DIR / TEST_PAGE_FILENAME) as f:
+    with open(TEST_PAGE_PATH) as f:
         page['content'] = f.read()
 
     page['filename'] = TEST_PAGE_FILENAME

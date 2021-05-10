@@ -26,12 +26,12 @@ IMPORTANT_TAGS = types.MappingProxyType({
     'script': 'src',
     'img': 'src',
 })
-REMOTE_SOURCE = re.compile(r'^(http)s?(://)')
+REMOTE_SOURCE = re.compile('^(http)s?(://)')
 
 FILENAME_WITH_EXTENSION = re.compile(
     r'(?P<name>.+)(?P<extension>\.[a-zA-Z0-9]+$)',
 )
-NOT_LETTERS_OR_DIGITS = re.compile(r'[^a-zA-Zа-яА-Я0-9]')
+NOT_LETTERS_OR_DIGITS = re.compile('[^a-zA-Zа-яА-Я0-9]')
 SEPARATOR = '-'
 MAX_FILENAME_LENGTH = 255
 
@@ -158,7 +158,7 @@ def make_name_from_url(url, search_extension=False):
     parsed_url = urllib.parse.urlparse(urllib.parse.unquote(url))
     url_without_scheme = parsed_url.netloc + parsed_url.path
     # if the url starts or ends with a slash, remove the slash
-    cleared_url = re.sub(r'^/|/$', '', url_without_scheme)
+    cleared_url = re.sub('^/|/$', '', url_without_scheme)
 
     if search_extension:
         parts = FILENAME_WITH_EXTENSION.search(cleared_url)

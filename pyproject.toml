@@ -15,10 +15,10 @@ page-loader = "page_load.scripts.page_loader:main"
 python = "^3.6"
 requests = "^2.24.0"
 pathlib = "^1.0.1"
-isort = "4.3.21"
 
 [tool.poetry.dev-dependencies]
-wemake-python-styleguide = "^0.14.1"
+isort = "^5.0.0"
+wemake-python-styleguide = "^0.15.0"
 pytest = "^6.1.1"
 pytest-cov = "^2.10.1"
 mypy = "^0.790"

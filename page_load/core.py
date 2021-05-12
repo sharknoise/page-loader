@@ -26,7 +26,7 @@ IMPORTANT_TAGS = types.MappingProxyType({
     'script': 'src',
     'img': 'src',
 })
-REMOTE_SOURCE = re.compile('^(http)s?(://)')
+SCHEME = re.compile('^(http)s?(://)')
 
 FILENAME_WITH_EXTENSION = re.compile(
     r'(?P<name>.+)(?P<extension>\.[a-zA-Z0-9]+$)',
@@ -125,21 +125,25 @@ def parse_and_process_page(decoded_html, url):
     resources_dir = Path(base_for_name + SUFFIX)
 
     resources = []
-    tags_with_resources = soup.find_all(important_tag_has_local_resource)
-    for tag in tags_with_resources:
-        attribute_name = IMPORTANT_TAGS[tag.name]
-        resource_url = urllib.parse.urljoin(
-            url,
-            tag[attribute_name],
-        )
+    tags_with_resources = soup.find_all(IMPORTANT_TAGS.keys())
+    page_domain = re.compile(urllib.parse.urlparse(url).netloc)
 
-        resource_filename = resources_dir / make_name_from_url(
-            tag[attribute_name],
-            search_extension=True,
-        )
-        resources.append((resource_url, resource_filename))
-        new_value = resource_filename
-        tag[attribute_name] = new_value
+    for tag in tags_with_resources:
+        attr_val = tag.get(IMPORTANT_TAGS[tag.name])
+        if SCHEME.search(attr_val) is None or page_domain.search(attr_val):
+            attribute_name = IMPORTANT_TAGS[tag.name]
+            resource_url = urllib.parse.urljoin(
+                url,
+                tag[attribute_name],
+            )
+
+            resource_filename = resources_dir / make_name_from_url(
+                tag[attribute_name],
+                search_extension=True,
+            )
+            resources.append((resource_url, resource_filename))
+            new_value = resource_filename
+            tag[attribute_name] = new_value
 
     return (str(soup), page_filename, resources)
 
@@ -213,15 +217,6 @@ def make_short_name(name, extension):
 
     names_counter[expected_name] += 1
     return result_name
-
-
-def important_tag_has_local_resource(tag):
-    """Check if a tag is important and its src or href is relative."""
-    return (
-        tag.name in IMPORTANT_TAGS and
-        tag.has_attr(IMPORTANT_TAGS[tag.name]) and
-        REMOTE_SOURCE.search(tag.get(IMPORTANT_TAGS[tag.name])) is None
-    )
 
 
 def write_to_file(path_to_file, data_to_write, binary_mode=False):

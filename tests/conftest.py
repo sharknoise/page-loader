@@ -20,7 +20,7 @@ SAVED_RESOURCE_DIR = 'sharknoise-github-io-pltest_files'
 SAVED_RESOURCE_PATHS = (
     'resources-test-image1.jpg',
     'test-image2.png',
-    'style.css',
+    'sharknoise-github-io-resources-style.css',
 )
 
 
@@ -36,6 +36,12 @@ def mock_response200(mock):
         'GET',
         TEST_URL,
         text=MOCK_FIXTURE_PATH.read_text(),
+    )
+    path = FIXTURES_DIR / 'style.css'
+    mock.register_uri(
+        'GET',
+        'http://sharknoise.github.io/resources/style.css',
+        content=path.read_bytes(),
     )
 
 

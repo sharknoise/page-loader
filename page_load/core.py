@@ -1,7 +1,7 @@
 """Core functions for page-loader."""
 
-
 import collections
+import logging
 import re
 import types
 import urllib
@@ -9,6 +9,12 @@ from pathlib import Path
 
 import requests
 from bs4 import BeautifulSoup
+
+logging.basicConfig(
+    format='%(asctime)s %(message)s',  # noqa: WPS323
+    level=logging.INFO,
+    datefmt='%H:%M:%S',  # noqa: WPS323
+)
 
 MESSAGE_TEMPLATE = 'Download failed! Response code {code}'
 
@@ -222,8 +228,9 @@ def make_short_name(name, extension):
 def write_to_file(path_to_file, data_to_write, binary_mode=False):
     """Write data to a file, using binary mode if necessary."""
     path = Path(path_to_file)
-
     make_directory(path)
+    current_directory = Path(__file__).parent.absolute()
+    logging.info('saving {0}'.format(current_directory / path))
 
     with open(path, 'wb' if binary_mode else 'w') as target_file:
         target_file.write(data_to_write)

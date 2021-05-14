@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "page-loader"
-version = "0.2.0"
+version = "0.3.0"
 description = ""
 authors = ["sharknoise <sharknoise@gmail.com>"]
 
@@ -14,11 +14,11 @@ page-loader = "page_load.scripts.page_loader:main"
 [tool.poetry.dependencies]
 python = "^3.6"
 requests = "^2.24.0"
-pathlib = "^1.0.1"
-isort = "4.3.21"
+beautifulsoup4 = "^4.9.1"
 
 [tool.poetry.dev-dependencies]
-wemake-python-styleguide = "^0.14.1"
+isort = "^5.0.0"
+wemake-python-styleguide = "^0.15.0"
 pytest = "^6.1.1"
 pytest-cov = "^2.10.1"
 mypy = "^0.790"

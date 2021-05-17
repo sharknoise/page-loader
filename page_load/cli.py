@@ -17,3 +17,15 @@ parser.add_argument(
     dest='destination',
     default='',
 )
+
+parser.add_argument(
+    '-l',
+    '--log',
+    help=(
+        "set logging level: 'none', 'info', 'warning', 'debug'"
+    ),
+    metavar='LOG_LEVEL',
+    dest='log_level',
+    choices=['none', 'info', 'warning', 'debug'],
+    default='info',
+)

@@ -10,12 +10,6 @@ from pathlib import Path
 import requests
 from bs4 import BeautifulSoup
 
-logging.basicConfig(
-    format='%(asctime)s %(message)s',  # noqa: WPS323
-    level=logging.INFO,
-    datefmt='%H:%M:%S',  # noqa: WPS323
-)
-
 MESSAGE_TEMPLATE = 'Download failed! Response code {code}'
 
 SUCCESSFUL_STATUS_CODE = 200
@@ -230,7 +224,7 @@ def write_to_file(path_to_file, data_to_write, binary_mode=False):
     path = Path(path_to_file)
     make_directory(path)
     current_directory = Path(__file__).parent.absolute()
-    logging.info('saving {0}'.format(current_directory / path))
+    logging.info('Saving {0}'.format(current_directory / path))
 
     with open(path, 'wb' if binary_mode else 'w') as target_file:
         target_file.write(data_to_write)

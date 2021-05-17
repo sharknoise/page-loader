@@ -8,7 +8,7 @@ from page_load import logging
 
 TESTS_DIR = Path(__file__).parent.absolute()
 FIXTURES_DIR = TESTS_DIR / 'fixtures'
-TEST_URL = 'http://sharknoise.github.io/pltestt/'
+TEST_URL = 'http://sharknoise.github.io/pltest/'
 MOCK_FIXTURE_FILENAME = 'mock_page.html'
 MOCK_FIXTURE_PATH = FIXTURES_DIR / MOCK_FIXTURE_FILENAME
 MOCK_RESOURCE_PATHS = (

@@ -15,7 +15,7 @@ def setup(log_level):
     logger = logging.getLogger()
     console = logging.StreamHandler()
     formatter = logging.Formatter(
-        LOG_MESSAGE_TEMPLATE,  # noqa: WPS323
+        LOG_MESSAGE_TEMPLATE,
         LOG_TIME_TEMPLATE,
     )
     console.setFormatter(formatter)

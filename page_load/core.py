@@ -10,8 +10,6 @@ from pathlib import Path
 import requests
 from bs4 import BeautifulSoup
 
-MESSAGE_TEMPLATE = 'Download failed! Response code {code}'
-
 SUCCESSFUL_STATUS_CODE = 200
 USER_AGENT = (
     'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36'
@@ -38,6 +36,12 @@ MAX_FILENAME_LENGTH = 255
 names_counter = collections.Counter()
 
 
+class PageLoadError(Exception):
+    """An error caught, logged and re-raised by page_load.core."""
+
+    pass  # noqa: WPS420, WPS604
+
+
 def download_page(target_url, destination=''):
     """
     Download a web page to a local directory.
@@ -45,10 +49,18 @@ def download_page(target_url, destination=''):
     Args:
         target_url: url of the page
         destination: directory to store the page
+
+    Raises:
+        PageLoadError: requests.HTTPError re-raised after logging
     """
     path = Path(destination)
 
-    page_content, page_binary, response_url = send_request(target_url)
+    try:
+        page_content, page_binary, response_url = send_request(target_url)
+    except requests.HTTPError as page_request_error:
+        logging.error(str(page_request_error))
+        logging.debug(str(page_request_error), exc_info=True)
+        raise PageLoadError from page_request_error
 
     prepared = parse_and_process_page(page_content, response_url)
     page, page_filename, resources = prepared
@@ -61,7 +73,13 @@ def download_page(target_url, destination=''):
 
     if resources:
         for resource_url, resource_filename in resources:
-            resource_content, resource_binary, _ = send_request(resource_url)
+            try:
+                resource_content, resource_binary, _ = send_request(
+                    resource_url,
+                )
+            except requests.HTTPError as resource_request_error:
+                logging.warning(str(resource_request_error))
+                continue
 
             write_to_file(
                 path / resource_filename,
@@ -82,24 +100,19 @@ def send_request(url):
         response_content: content of the response
         binary: true if the content is binary
         response.url
-
-    Raises:
-        ValueError: in case of bad request
     """
     headers = {'User-Agent': USER_AGENT}
 
     response = requests.get(url, headers=headers)
+    # raises HTTPError if one occured
+    response.raise_for_status()
+
     if response.encoding:
         response_content = response.text
         binary = False
     else:
         response_content = response.content
         binary = True
-
-    if response.status_code != SUCCESSFUL_STATUS_CODE:
-        raise ValueError(
-            MESSAGE_TEMPLATE.format(code=response.status_code),
-        )
 
     return (response_content, binary, response.url)
 

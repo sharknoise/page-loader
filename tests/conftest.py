@@ -4,6 +4,8 @@ from pathlib import Path
 import pytest
 import requests_mock
 
+from page_load import logging
+
 TESTS_DIR = Path(__file__).parent.absolute()
 FIXTURES_DIR = TESTS_DIR / 'fixtures'
 TEST_URL = 'http://sharknoise.github.io/pltest/'
@@ -22,6 +24,11 @@ SAVED_RESOURCE_PATHS = (
     'test-image2.png',
     'sharknoise-github-io-resources-style.css',
 )
+
+
+@pytest.fixture(scope='session', autouse=True)
+def show_debug_messages():
+    logging.setup(logging.DEBUG)
 
 
 @pytest.fixture()

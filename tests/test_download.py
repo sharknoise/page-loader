@@ -58,5 +58,5 @@ def test_real_download_page(tmp_path):
 
 
 def test_download_page_mock_fail(mock_response404):
-    with pytest.raises(ValueError):
+    with pytest.raises(core.PageLoadError):
         core.download_page(ct.TEST_URL)

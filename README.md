@@ -13,3 +13,4 @@ positional arguments:
 optional arguments:  
   `-h`, `--help` - show this help message and exit  
   `-o OUTPUT`, `--output OUTPUT` - set the save directory  
+  `-l LOG_LEVEL, --log LOG_LEVEL` - set logging level: 'none', 'info', 'warning', 'debug'

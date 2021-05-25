@@ -239,8 +239,15 @@ def write_to_file(path_to_file, data_to_write, binary_mode=False):
     current_directory = Path(__file__).parent.absolute()
     logging.info('Saving {0}'.format(current_directory / path))
 
-    with open(path, 'wb' if binary_mode else 'w') as target_file:
-        target_file.write(data_to_write)
+    try:
+        with open(path, 'wb' if binary_mode else 'w') as target_file:
+            target_file.write(data_to_write)
+    except OSError as file_writing_error:
+        logging.error(str(file_writing_error))
+        logging.debug(str(file_writing_error), exc_info=True)
+        raise PageLoadError(
+            "Error writing to '{0}'!".format(path),
+        ) from file_writing_error
 
 
 def make_directory(path_to_file):

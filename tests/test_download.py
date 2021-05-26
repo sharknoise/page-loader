@@ -57,6 +57,8 @@ def test_real_download_page(tmp_path):
         assert saved_res_path.read_bytes() == mock_res_path.read_bytes()
 
 
-def test_download_page_mock_fail(mock_response404):
+@pytest.mark.parametrize('code', ct.ERROR_CODES, ids=ct.ERROR_IDS)
+def test_download_page_http_error(mock, code):
+    mock.get(ct.TEST_URL, status_code=code)
     with pytest.raises(core.PageLoadError):
         core.download_page(ct.TEST_URL)

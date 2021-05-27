@@ -57,10 +57,12 @@ def download_page(target_url, destination=''):
 
     try:
         page_content, page_binary, response_url = send_request(target_url)
-    except requests.HTTPError as page_request_error:
-        logging.error(str(page_request_error))
-        logging.debug(str(page_request_error), exc_info=True)
-        raise PageLoadError from page_request_error
+    except (
+        requests.HTTPError, requests.exceptions.ConnectionError,
+    ) as page_request_error:
+        raise PageLoadError(
+            str(page_request_error),
+        ) from page_request_error
 
     prepared = parse_and_process_page(page_content, response_url)
     page, page_filename, resources = prepared
@@ -243,14 +245,17 @@ def write_to_file(path_to_file, data_to_write, binary_mode=False):
         with open(path, 'wb' if binary_mode else 'w') as target_file:
             target_file.write(data_to_write)
     except OSError as file_writing_error:
-        logging.error(str(file_writing_error))
-        logging.debug(str(file_writing_error), exc_info=True)
         raise PageLoadError(
-            "Error writing to '{0}'!".format(path),
+            str(file_writing_error),
         ) from file_writing_error
 
 
 def make_directory(path_to_file):
     """Create a parent directory for a file based on the specified path."""
     path = Path(path_to_file)
-    path.parent.mkdir(parents=True, exist_ok=True)
+    try:
+        path.parent.mkdir(parents=True, exist_ok=True)
+    except OSError as directory_writing_error:
+        raise PageLoadError(
+            str(directory_writing_error),
+        ) from directory_writing_error

@@ -1,5 +1,6 @@
 """A script to run page-loader in terminal."""
 
+import logging
 import sys
 
 from page_load.cli import parser
@@ -16,7 +17,9 @@ def main():
             arguments.target_url,
             destination=arguments.destination,
         )
-    except PageLoadError:
+    except PageLoadError as known_error:
+        logging.error(str(known_error))
+        logging.debug(str(known_error), exc_info=True)
         sys.exit(1)
 
 

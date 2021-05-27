@@ -58,7 +58,11 @@ def download_page(target_url, destination=''):
     try:
         page_content, page_binary, response_url = send_request(target_url)
     except (
-        requests.HTTPError, requests.exceptions.ConnectionError,
+        requests.HTTPError,
+        requests.exceptions.ConnectionError,
+        requests.exceptions.MissingSchema,
+        requests.exceptions.Timeout,
+        requests.exceptions.TooManyRedirects,
     ) as page_request_error:
         raise PageLoadError(
             str(page_request_error),

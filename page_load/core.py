@@ -42,6 +42,18 @@ class PageLoadError(Exception):
     pass  # noqa: WPS420, WPS604
 
 
+class PageLoadWebError(PageLoadError):
+    """An error caught, logged and re-raised by download_page."""
+
+    pass  # noqa: WPS420, WPS604
+
+
+class PageLoadWriteError(PageLoadError):
+    """An error caught, logged, re-raised by write_to_file, make_directory."""
+
+    pass  # noqa: WPS420, WPS604
+
+
 def download_page(target_url, destination=''):
     """
     Download a web page to a local directory.
@@ -51,7 +63,7 @@ def download_page(target_url, destination=''):
         destination: directory to store the page
 
     Raises:
-        PageLoadError: requests.HTTPError re-raised after logging
+        PageLoadWebError: an error while requesting the page
     """
     path = Path(destination)
 
@@ -64,7 +76,7 @@ def download_page(target_url, destination=''):
         requests.exceptions.Timeout,
         requests.exceptions.TooManyRedirects,
     ) as page_request_error:
-        raise PageLoadError(
+        raise PageLoadWebError(
             str(page_request_error),
         ) from page_request_error
 
@@ -255,7 +267,7 @@ def write_to_file(path_to_file, data_to_write, binary_mode=False):
         with open(path, 'wb' if binary_mode else 'w') as target_file:
             target_file.write(data_to_write)
     except OSError as file_writing_error:
-        raise PageLoadError(
+        raise PageLoadWriteError(
             str(file_writing_error),
         ) from file_writing_error
 
@@ -266,6 +278,6 @@ def make_directory(path_to_file):
     try:
         path.parent.mkdir(parents=True, exist_ok=True)
     except OSError as directory_writing_error:
-        raise PageLoadError(
+        raise PageLoadWriteError(
             str(directory_writing_error),
         ) from directory_writing_error

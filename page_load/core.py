@@ -83,8 +83,9 @@ def download_page(target_url, destination=''):
                 resource_content, resource_binary, _ = send_request(
                     resource_url,
                 )
-            except requests.HTTPError as resource_request_error:
+            except Exception as resource_request_error:
                 logging.warning(str(resource_request_error))
+                logging.debug(str(resource_request_error), exc_info=True)
                 continue
 
             write_to_file(
@@ -149,6 +150,11 @@ def parse_and_process_page(decoded_html, url):
 
     for tag in tags_with_resources:
         attr_val = tag.get(IMPORTANT_TAGS[tag.name])
+        if attr_val is None:
+            logging.debug(
+                'Important tag has no src or href:\n {0}'.format(tag),
+            )
+            continue
         if SCHEME.search(attr_val) is None or page_domain.search(attr_val):
             attribute_name = IMPORTANT_TAGS[tag.name]
             resource_url = urllib.parse.urljoin(

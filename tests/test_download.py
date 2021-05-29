@@ -62,3 +62,8 @@ def test_download_page_http_error(mock, code):
     mock.get(ct.TEST_URL, status_code=code)
     with pytest.raises(core.PageLoadError):
         core.download_page(ct.TEST_URL)
+
+
+def test_missing_schema():
+    with pytest.raises(core.PageLoadError):
+        core.download_page(ct.URL_WITHOUT_SCHEMA)

@@ -28,6 +28,7 @@ ERROR_CODES = (400, 401, 403, 404, 500)
 ERROR_IDS = (
     'bad request', 'unauthorized', 'no privileges', 'not found', 'server error'
 )
+URL_WITHOUT_SCHEMA = 'wrong.com'
 
 
 @pytest.fixture(scope='session', autouse=True)

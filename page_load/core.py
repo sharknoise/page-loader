@@ -54,7 +54,7 @@ class PageLoadWriteError(PageLoadError):
     pass  # noqa: WPS420, WPS604
 
 
-def download_page(target_url, destination=''):
+def download_page(target_url, destination=''):  # noqa: WPS231  # complexity
     """
     Download a web page to a local directory.
 
@@ -69,9 +69,12 @@ def download_page(target_url, destination=''):
 
     try:
         page_content, page_binary, response_url = send_request(target_url)
+    except requests.exceptions.ConnectionError as wrong_url_error:
+        raise PageLoadWebError(
+            'Connection error, check whether the URL is correct.',
+        ) from wrong_url_error
     except (
         requests.HTTPError,
-        requests.exceptions.ConnectionError,
         requests.exceptions.MissingSchema,
         requests.exceptions.Timeout,
         requests.exceptions.TooManyRedirects,

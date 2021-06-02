@@ -65,5 +65,22 @@ def test_download_page_http_error(mock, code):
 
 
 def test_missing_schema():
-    with pytest.raises(core.PageLoadWebError):
+    with pytest.raises(core.PageLoadWebError) as error_info:
         core.download_page(ct.URL_WITHOUT_SCHEMA)
+    assert 'No schema supplied' in str(error_info.value)
+
+
+def test_connection_error(mock_response_connection_error):
+    with pytest.raises(core.PageLoadWebError) as error_info:
+        core.download_page(ct.TEST_URL)
+    assert 'Connection error' in str(error_info.value)
+
+
+def test_response_timeout(mock_response_timeout):
+    with pytest.raises(core.PageLoadWebError):
+        core.download_page(ct.TEST_URL)
+
+
+def test_many_redirects(mock_response_many_redirects):
+    with pytest.raises(core.PageLoadWebError):
+        core.download_page(ct.TEST_URL)

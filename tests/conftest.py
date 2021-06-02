@@ -2,6 +2,7 @@
 from pathlib import Path
 
 import pytest
+import requests
 import requests_mock
 
 from page_load import logging
@@ -64,3 +65,25 @@ def mock_response404(mock):
         TEST_URL,
         status_code=404,
     )
+
+
+@pytest.fixture
+def mock_response_connection_error(monkeypatch):
+    def mock_get(*args, **kwargs):
+        raise requests.exceptions.ConnectionError
+
+    monkeypatch.setattr(requests, 'get', mock_get)
+
+
+@pytest.fixture
+def mock_response_timeout(monkeypatch):
+    def mock_get(*args, **kwargs):
+        raise requests.exceptions.Timeout
+    monkeypatch.setattr(requests, 'get', mock_get)
+
+
+@pytest.fixture
+def mock_response_many_redirects(monkeypatch):
+    def mock_get(*args, **kwargs):
+        raise requests.exceptions.TooManyRedirects
+    monkeypatch.setattr(requests, 'get', mock_get)

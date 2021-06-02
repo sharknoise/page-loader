@@ -4,7 +4,6 @@ from pathlib import Path
 import pytest
 import requests
 import requests_mock
-
 from page_load import logging
 
 TESTS_DIR = Path(__file__).parent.absolute()

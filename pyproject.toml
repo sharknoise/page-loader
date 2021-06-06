@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "page-loader"
-version = "0.5.0"
+version = "0.6.0"
 description = ""
 authors = ["sharknoise <sharknoise@gmail.com>"]
 
@@ -15,6 +15,7 @@ page-loader = "page_load.scripts.page_loader:main"
 python = "^3.6"
 requests = "^2.24.0"
 beautifulsoup4 = "^4.9.1"
+progress = "^1.5"
 
 [tool.poetry.dev-dependencies]
 isort = "^5.0.0"

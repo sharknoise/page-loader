@@ -9,6 +9,7 @@ from pathlib import Path
 
 import requests
 from bs4 import BeautifulSoup
+from progress.bar import FillingSquaresBar
 
 SUCCESSFUL_STATUS_CODE = 200
 USER_AGENT = (
@@ -93,6 +94,11 @@ def download_page(target_url, destination=''):  # noqa: WPS231  # complexity
     )
 
     if resources:
+        download_progress = FillingSquaresBar(
+            'Downloading page resources',
+            max=len(resources),
+            suffix='%(percent)d%%',  # noqa:WPS323
+        )
         for resource_url, resource_filename in resources:
             try:
                 resource_content, resource_binary, _ = send_request(
@@ -108,6 +114,9 @@ def download_page(target_url, destination=''):  # noqa: WPS231  # complexity
                 resource_content,
                 binary_mode=resource_binary,
             )
+            download_progress.next()  # noqa: B305
+
+        download_progress.finish()
 
 
 def send_request(url):
@@ -264,7 +273,7 @@ def write_to_file(path_to_file, data_to_write, binary_mode=False):
     path = Path(path_to_file)
     make_directory(path)
     current_directory = Path(__file__).parent.absolute()
-    logging.info('Saving {0}'.format(current_directory / path))
+    logging.debug('Saving {0}'.format(current_directory / path))
 
     try:
         with open(path, 'wb' if binary_mode else 'w') as target_file:

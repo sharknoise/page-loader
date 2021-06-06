@@ -6,7 +6,9 @@ NONE = 'none'
 INFO = 'info'  # noqa: WPS110
 WARNING = 'warning'
 DEBUG = 'debug'
-LOG_MESSAGE_TEMPLATE = '%(asctime)s %(levelname)s:\t%(message)s'  # noqa:WPS323
+LOG_MESSAGE_TEMPLATE = (
+    '\n%(asctime)s %(levelname)s:\t%(message)s'  # noqa:WPS323
+)
 LOG_TIME_TEMPLATE = '%H:%M:%S'
 
 

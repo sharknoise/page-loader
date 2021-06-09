@@ -34,6 +34,8 @@ NOT_LETTERS_OR_DIGITS = re.compile('[^a-zA-Zа-яА-Я0-9]')
 SEPARATOR = '-'
 MAX_FILENAME_LENGTH = 255
 
+logger = logging.getLogger()
+
 names_counter = collections.Counter()
 
 
@@ -105,8 +107,10 @@ def download_page(target_url, destination=''):  # noqa: WPS231  # complexity
                     resource_url,
                 )
             except Exception as resource_request_error:
-                logging.warning(str(resource_request_error))
-                logging.debug(str(resource_request_error), exc_info=True)
+                logging.warning(
+                    str(resource_request_error),
+                    exc_info=logger.isEnabledFor(logging.DEBUG),
+                )
                 continue
 
             write_to_file(

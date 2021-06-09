@@ -17,6 +17,8 @@ COMMON_ERROR_EXIT_CODE = 1
 WEB_ERROR_EXIT_CODE = 2
 WRITE_ERROR_EXIT_CODE = 3
 
+logger = logging.getLogger()
+
 
 def main():
     """Run the utility in terminal."""
@@ -28,8 +30,10 @@ def main():
             destination=arguments.destination,
         )
     except PageLoadError as known_error:
-        logging.error(str(known_error))
-        logging.debug(str(known_error), exc_info=True)
+        logging.error(
+            str(known_error),
+            exc_info=logger.isEnabledFor(logging.DEBUG),
+        )
         if isinstance(known_error, PageLoadWebError):
             sys.exit(WEB_ERROR_EXIT_CODE)
         elif isinstance(known_error, PageLoadWriteError):

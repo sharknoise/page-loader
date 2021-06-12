@@ -108,7 +108,9 @@ def download_page(target_url, destination=''):  # noqa: WPS231  # complexity
                 )
             except Exception as resource_request_error:
                 logging.warning(
-                    str(resource_request_error),
+                    'Resource download failed: {0}'.format(
+                        str(resource_request_error)
+                    ),
                     exc_info=logger.isEnabledFor(logging.DEBUG),
                 )
                 continue

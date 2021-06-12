@@ -89,7 +89,7 @@ def download_page(target_url, destination=''):  # noqa: WPS231  # complexity
     prepared = parse_and_process_page(page_content, response_url)
     page, page_filename, resources = prepared
 
-    write_to_file(
+    saved_page_path = write_to_file(
         path / page_filename,
         page,
         binary_mode=page_binary,
@@ -109,7 +109,7 @@ def download_page(target_url, destination=''):  # noqa: WPS231  # complexity
             except Exception as resource_request_error:
                 logging.warning(
                     'Resource download failed: {0}'.format(
-                        str(resource_request_error)
+                        str(resource_request_error),
                     ),
                     exc_info=logger.isEnabledFor(logging.DEBUG),
                 )
@@ -123,6 +123,9 @@ def download_page(target_url, destination=''):  # noqa: WPS231  # complexity
             download_progress.next()  # noqa: B305
 
         download_progress.finish()
+
+    if saved_page_path:
+        logging.info('Saved to {0}'.format(saved_page_path))
 
 
 def send_request(url):
@@ -288,6 +291,7 @@ def write_to_file(path_to_file, data_to_write, binary_mode=False):
         raise PageLoadWriteError(
             str(file_writing_error),
         ) from file_writing_error
+    return current_directory / path
 
 
 def make_directory(path_to_file):

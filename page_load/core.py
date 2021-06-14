@@ -96,36 +96,49 @@ def download_page(target_url, destination=''):  # noqa: WPS231  # complexity
     )
 
     if resources:
-        download_progress = FillingSquaresBar(
-            'Downloading page resources',
-            max=len(resources),
-            suffix='%(percent)d%%',  # noqa:WPS323
-        )
-        for resource_url, resource_filename in resources:
-            try:
-                resource_content, resource_binary, _ = send_request(
-                    resource_url,
-                )
-            except Exception as resource_request_error:
-                logging.warning(
-                    'Resource download failed: {0}'.format(
-                        str(resource_request_error),
-                    ),
-                    exc_info=logger.isEnabledFor(logging.DEBUG),
-                )
-                continue
-
-            write_to_file(
-                path / resource_filename,
-                resource_content,
-                binary_mode=resource_binary,
-            )
-            download_progress.next()  # noqa: B305
-
-        download_progress.finish()
+        download_resources(resources, path)
 
     if saved_page_path:
         logging.info('Saved to {0}'.format(saved_page_path))
+
+
+def download_resources(resources, path):
+    """
+    Download page resources to the specified directory.
+
+    Show the download progress in terminal.
+
+    Args:
+        resources: list of (url, local storage subpath) tuples
+        path: parent directory for local storage
+    """
+    download_progress = FillingSquaresBar(
+        'Downloading page resources',
+        max=len(resources),
+        suffix='%(percent)d%%',  # noqa:WPS323
+    )
+    for resource_url, resource_filename in resources:
+        try:
+            resource_content, resource_binary, _ = send_request(
+                resource_url,
+            )
+        except Exception as resource_request_error:
+            logging.warning(
+                'Resource download failed: {0}'.format(
+                    str(resource_request_error),
+                ),
+                exc_info=logger.isEnabledFor(logging.DEBUG),
+            )
+            continue
+
+        write_to_file(
+            path / resource_filename,
+            resource_content,
+            binary_mode=resource_binary,
+        )
+        download_progress.next()  # noqa: B305
+
+    download_progress.finish()
 
 
 def send_request(url):

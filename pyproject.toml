@@ -1,6 +1,6 @@
 [tool.poetry]
-name = "page-loader"
-version = "0.6.0"
+name = "SHARKNOISE_page_loader"
+version = "0.6.2"
 description = ""
 authors = ["sharknoise <sharknoise@gmail.com>"]
 

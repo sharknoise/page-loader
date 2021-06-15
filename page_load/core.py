@@ -99,7 +99,7 @@ def download_page(target_url, destination=''):  # noqa: WPS231  # complexity
         download_resources(resources, path)
 
     if saved_page_path:
-        logging.info('Saved to {0}'.format(saved_page_path))
+        logging.info('Saved as {0}'.format(saved_page_path))
 
 
 def download_resources(resources, path):
@@ -292,19 +292,18 @@ def make_short_name(name, extension):
 
 def write_to_file(path_to_file, data_to_write, binary_mode=False):
     """Write data to a file, using binary mode if necessary."""
-    path = Path(path_to_file)
-    make_directory(path)
-    current_directory = Path(__file__).parent.absolute()
-    logging.debug('Saving {0}'.format(current_directory / path))
+    full_path = Path().absolute() / Path(path_to_file)
+    make_directory(full_path)
+    logging.debug('Saving {0}'.format(full_path))
 
     try:
-        with open(path, 'wb' if binary_mode else 'w') as target_file:
+        with open(full_path, 'wb' if binary_mode else 'w') as target_file:
             target_file.write(data_to_write)
     except OSError as file_writing_error:
         raise PageLoadWriteError(
             str(file_writing_error),
         ) from file_writing_error
-    return current_directory / path
+    return full_path
 
 
 def make_directory(path_to_file):

@@ -118,6 +118,11 @@ def download_resources(resources, path):
         suffix='%(percent)d%%',  # noqa:WPS323
     )
     for resource_url, resource_filename in resources:
+        logging.debug(
+            'resource_url: {0}, resource_filename: {1}'.format(
+                resource_url, resource_filename,
+            ),
+        )
         try:
             resource_content, resource_binary, _ = send_request(
                 resource_url,

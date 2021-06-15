@@ -5,12 +5,18 @@
 ##
 page-loader is a CLI utility that downloads a web page of your choice.
 ##
-usage: `page-loader [-h] [-o OUTPUT] target_url`  
+Installation - copy the following into the terminal:  
+```
+python3 -m pip install --user -i https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple sharknoise-page-loader
+```
+Usage: `page-loader [-h] [-o OUTPUT] [-l LOG_LEVEL] target_url`  
   
-positional arguments:  
+Positional arguments:  
   `target_url` - URL of the page  
   
-optional arguments:  
+Optional arguments:  
   `-h`, `--help` - show this help message and exit  
   `-o OUTPUT`, `--output OUTPUT` - set the save directory  
   `-l LOG_LEVEL, --log LOG_LEVEL` - set logging level: 'none', 'info', 'warning', 'debug'
+  
+  [Watch a demo video](https://asciinema.org/a/i3xzM9JdTmX8LArwX3K8xA6UY)
